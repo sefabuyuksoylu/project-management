@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Görevi Düzenle' : 'Yeni Görev Ekle' }}</h2>
+
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Başlık</mat-label>
+      <input matInput formControlName="title" placeholder="Görev başlığı" required>
+      <mat-error *ngIf="taskForm.controls['title'].hasError('required')">
+        Başlık gerekli
+      </mat-error>
+      <mat-error *ngIf="taskForm.controls['title'].hasError('minlength')">
+        Başlık en az 3 karakter olmalıdır
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Açıklama</mat-label>
+      <textarea matInput formControlName="description" rows="3" placeholder="Görevin detaylı açıklaması"></textarea>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Durum</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let status of statuses" [value]="status.value">
+            {{ status.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Öncelik</mat-label>
+        <mat-select formControlName="priority">
+          <mat-option *ngFor="let priority of priorities" [value]="priority.value">
+            {{ priority.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Teslim Tarihi</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="due_date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" [disabled]="isLoading" (click)="onCancel()">İptal</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!taskForm.valid || isLoading">
+      <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+      <span *ngIf="!isLoading">{{ isEditMode ? 'Güncelle' : 'Ekle' }}</span>
+    </button>
+  </div>
+</form> 

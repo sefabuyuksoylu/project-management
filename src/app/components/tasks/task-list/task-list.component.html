@@ -1,0 +1,63 @@
+<div class="task-list-container">
+  <div class="project-header">
+    <div class="back-button">
+      <button mat-icon-button (click)="navigateBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <div class="project-info" *ngIf="project">
+      <h1>{{ project.name }}</h1>
+      <p>{{ project.description }}</p>
+      <div class="project-actions">
+        <button mat-stroked-button (click)="editProject()">
+          <mat-icon>edit</mat-icon> Projeyi Düzenle
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-controls">
+    <h2>Görevler</h2>
+    <button mat-raised-button color="primary" (click)="openTaskForm()">
+      <mat-icon>add</mat-icon> Yeni Görev
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!isLoading && tasks.length === 0" class="no-tasks">
+    <mat-icon>assignment</mat-icon>
+    <p>Bu projede henüz hiç görev yok.</p>
+    <button mat-raised-button color="primary" (click)="openTaskForm()">İlk Görevi Oluşturun</button>
+  </div>
+
+  <div *ngIf="!isLoading && tasks.length > 0" class="task-grid">
+    <mat-card *ngFor="let task of tasks" class="task-card" (click)="openTaskActivities(task)">
+      <mat-card-header>
+        <mat-card-title>{{ task.title }}</mat-card-title>
+        <mat-card-subtitle>
+          <div class="task-meta">
+            <span class="task-status">{{ getStatusText(task.status) }}</span>
+            <span class="task-priority" [style.color]="getPriorityColor(task.priority)">
+              <mat-icon>flag</mat-icon>
+              {{ task.priority === 'high' ? 'Yüksek' : (task.priority === 'medium' ? 'Orta' : 'Düşük') }}
+            </span>
+          </div>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ task.description }}</p>
+        <div *ngIf="task.due_date" class="due-date">
+          <mat-icon>event</mat-icon>
+          <span>Teslim: {{ task.due_date | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="openTaskForm(task); $event.stopPropagation()">DÜZENLE</button>
+        <button mat-button color="warn" (click)="deleteTask(task, $event)">SİL</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div> 

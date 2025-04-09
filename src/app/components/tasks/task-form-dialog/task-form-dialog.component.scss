@@ -1,0 +1,19 @@
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.half-width {
+  width: 50%;
+}
+
+mat-spinner {
+  display: inline-block;
+  margin-right: 8px;
+} 

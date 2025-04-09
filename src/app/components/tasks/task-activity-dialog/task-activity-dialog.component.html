@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>
+  <span>{{ data.task.title }} - Aktiviteler</span>
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<div mat-dialog-content>
+  <div class="activity-form">
+    <h3>Zaman Takibi</h3>
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="activityForm" class="activity-form-content">
+          <mat-form-field appearance="outline" class="description-field">
+            <mat-label>Açıklama</mat-label>
+            <input matInput formControlName="description" placeholder="Ne yapıyorsunuz?" [disabled]="isRecording || isLoading">
+            <mat-error *ngIf="activityForm.controls['description'].hasError('required')">
+              Açıklama gerekli
+            </mat-error>
+          </mat-form-field>
+
+          <div class="timer-display" [class.active]="isRecording">
+            {{ displayTime }}
+          </div>
+
+          <div class="activity-controls">
+            <button *ngIf="!isRecording" mat-raised-button color="primary" 
+                    (click)="startActivity()" [disabled]="isLoading || !activityForm.valid">
+              <mat-icon>play_arrow</mat-icon> Başlat
+            </button>
+            <button *ngIf="isRecording" mat-raised-button color="warn" 
+                    (click)="stopActivity()" [disabled]="isLoading">
+              <mat-icon>stop</mat-icon> Durdur
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="activity-history">
+    <h3>Aktivite Geçmişi</h3>
+    
+    <div *ngIf="isLoading" class="loading-spinner">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+    
+    <div *ngIf="!isLoading && activities.length === 0" class="no-activities">
+      <mat-icon>history</mat-icon>
+      <p>Henüz hiç aktivite kaydı yok</p>
+    </div>
+    
+    <mat-list *ngIf="!isLoading && activities.length > 0">
+      <mat-list-item *ngFor="let activity of activities" class="activity-item">
+        <div class="activity-info">
+          <div class="activity-description">{{ activity.description }}</div>
+          <div class="activity-time">
+            <div class="time-details">
+              <div><strong>Başlangıç:</strong> {{ formatTime(activity.start_time) }}</div>
+              <div *ngIf="activity.end_time"><strong>Bitiş:</strong> {{ formatTime(activity.end_time) }}</div>
+            </div>
+            <div class="activity-duration" [class.active]="!activity.end_time">
+              {{ formatDuration(activity.start_time, activity.end_time) }}
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div> 

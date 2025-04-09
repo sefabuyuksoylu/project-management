@@ -1,0 +1,53 @@
+<div class="project-form-container">
+  <div class="form-header">
+    <h1>{{ isEditMode ? 'Projeyi Düzenle' : 'Yeni Proje Oluştur' }}</h1>
+    <button mat-icon-button routerLink="/dashboard" aria-label="Geri dön">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <div *ngIf="isLoading" class="loading-spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Proje Adı</mat-label>
+          <input matInput formControlName="name" placeholder="Örn. Web Sitesi Yenileme" required>
+          <mat-error *ngIf="projectForm.controls['name'].hasError('required')">
+            Proje adı gerekli
+          </mat-error>
+          <mat-error *ngIf="projectForm.controls['name'].hasError('minlength')">
+            Proje adı en az 3 karakter olmalıdır
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Açıklama</mat-label>
+          <textarea matInput formControlName="description" rows="4" placeholder="Projenin detaylı açıklaması" required></textarea>
+          <mat-error *ngIf="projectForm.controls['description'].hasError('required')">
+            Proje açıklaması gerekli
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Durum</mat-label>
+          <mat-select formControlName="status">
+            <mat-option *ngFor="let status of projectStatuses" [value]="status.value">
+              {{status.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="button-container">
+          <button mat-button type="button" (click)="cancel()">İptal</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!projectForm.valid || isLoading">
+            {{ isEditMode ? 'Güncelle' : 'Oluştur' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div> 
