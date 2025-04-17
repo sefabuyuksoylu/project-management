@@ -3,3 +3,932 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Tema Değişkenleri */
+:root {
+  /* Aydınlık Tema */
+  --background-color: #f5f5f5;
+  --card-background: #ffffff;
+  --text-color: #333333;
+  --secondary-text-color: #666666;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --primary-color: #3f51b5;
+  --accent-color: #ff4081;
+  --warn-color: #f44336;
+  --header-color: #3f51b5;
+  --header-text-color: #ffffff;
+  --dialog-background-color: #ffffff;
+}
+
+/* Aydınlık Tema Stilleri (Varsayılan) */
+/* Genel Stiller */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Toolbar Stili */
+.mat-toolbar.mat-primary,
+.mat-mdc-toolbar.mat-primary {
+  background-color: var(--primary-color);
+  color: var(--header-text-color);
+}
+
+/* Card Stili - hem eski hem yeni sınıf adları */
+.mat-card, .mat-mdc-card {
+  background-color: var(--card-background);
+  color: var(--text-color);
+  box-shadow: 0 2px 6px var(--shadow-color);
+}
+
+.mat-card-header, .mat-mdc-card-header {
+  color: var(--text-color);
+}
+
+.mat-card-title, .mat-mdc-card-title {
+  color: var(--text-color);
+}
+
+.mat-card-subtitle, .mat-mdc-card-subtitle {
+  color: var(--secondary-text-color);
+}
+
+/* Form Stili */
+.mat-form-field, .mat-mdc-form-field {
+  color: var(--text-color);
+}
+
+.mat-form-field-label, .mat-mdc-form-field-label {
+  color: var(--secondary-text-color) !important;
+}
+
+.mat-form-field-underline, 
+.mat-form-field-ripple,
+.mat-mdc-form-field-underline,
+.mat-mdc-form-field-ripple {
+  background-color: var(--border-color) !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline,
+.mat-mdc-form-field-appearance-outline .mat-mdc-form-field-outline {
+  color: var(--border-color);
+}
+
+.mat-mdc-text-field-wrapper {
+  background-color: transparent;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent;
+}
+
+/* Input ve Select */
+.mat-select-value, 
+.mat-select-arrow,
+.mat-input-element,
+.mat-mdc-select-value,
+.mat-mdc-select-arrow,
+.mat-mdc-input-element,
+.mat-mdc-textarea-element,
+textarea.mat-mdc-input-element {
+  color: var(--text-color) !important;
+}
+
+.mat-mdc-form-field-focus-overlay {
+  background-color: transparent;
+}
+
+/* Menü Stili */
+.mat-menu-panel, .mat-mdc-menu-panel {
+  background-color: var(--card-background);
+}
+
+.mat-menu-item, .mat-mdc-menu-item {
+  color: var(--text-color);
+}
+
+/* Dialog */
+.mat-dialog-container, .mat-mdc-dialog-container, .cdk-dialog-container {
+  background-color: var(--dialog-background-color);
+  color: var(--text-color);
+}
+
+/* Button Stili */
+.mat-button, .mat-mdc-button {
+  color: var(--text-color);
+}
+
+.mat-raised-button.mat-primary, .mat-mdc-raised-button.mat-primary {
+  background-color: var(--primary-color);
+  color: var(--header-text-color);
+}
+
+.mat-raised-button.mat-accent, .mat-mdc-raised-button.mat-accent {
+  background-color: var(--accent-color);
+  color: var(--header-text-color);
+}
+
+.mat-raised-button.mat-warn, .mat-mdc-raised-button.mat-warn {
+  background-color: var(--warn-color);
+  color: var(--header-text-color);
+}
+
+.new-project-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* İçerik ve Sayfalar */
+.content, 
+.dashboard-container {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Projeler */
+.project-card {
+  background-color: var(--card-background);
+}
+
+/* Chip Stili */
+.mat-chip.mat-standard-chip, 
+.mat-mdc-chip {
+  background-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.mat-chip.mat-standard-chip.mat-accent, 
+.mat-mdc-chip.mat-accent {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.mat-chip.mat-standard-chip.mat-primary, 
+.mat-mdc-chip.mat-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Arama ve Form Alanları */
+.mat-select-panel, .mat-mdc-select-panel {
+  background-color: var(--card-background);
+}
+
+.mat-option, .mat-mdc-option {
+  color: var(--text-color);
+}
+
+/* No Projects Area */
+.no-projects {
+  background-color: var(--card-background);
+  color: var(--text-color);
+}
+
+/* Karanlık Tema Değişkenleri */
+body.dark-theme {
+  /* Karanlık Tema */
+  --background-color: #303030;
+  --card-background: #424242;
+  --text-color: #f5f5f5;
+  --secondary-text-color: #bdbdbd;
+  --border-color: #616161;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --primary-color: #7986cb;
+  --accent-color: #ff80ab;
+  --warn-color: #ef9a9a;
+  --header-color: #212121;
+  --header-text-color: #f5f5f5;
+  --dialog-background-color: #424242;
+}
+
+/* Karanlık Tema için Angular Material Override */
+body.dark-theme {
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+/* Content Alanı */
+body.dark-theme .content {
+  background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Dashboard Container */
+body.dark-theme .dashboard-container {
+  background-color: var(--background-color) !important;
+}
+
+/* Kartlar */
+body.dark-theme .mat-card,
+body.dark-theme .mat-mdc-card {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+  box-shadow: 0 2px 8px var(--shadow-color) !important;
+}
+
+/* Stat Card - özel override */
+body.dark-theme .stat-card {
+  background-color: var(--card-background) !important;
+}
+
+/* No Projects Area */
+body.dark-theme .no-projects {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .no-projects p {
+  color: var(--secondary-text-color) !important;
+}
+
+body.dark-theme .no-projects mat-icon {
+  color: var(--secondary-text-color) !important;
+}
+
+/* Form Alanları */
+body.dark-theme .mat-form-field,
+body.dark-theme .mat-mdc-form-field {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-form-field-label,
+body.dark-theme .mat-mdc-form-field-label {
+  color: var(--secondary-text-color) !important;
+}
+
+body.dark-theme .mat-form-field-underline,
+body.dark-theme .mat-form-field-ripple,
+body.dark-theme .mat-mdc-form-field-underline,
+body.dark-theme .mat-mdc-form-field-ripple {
+  background-color: var(--border-color) !important;
+}
+
+body.dark-theme .mat-input-element,
+body.dark-theme .mat-select-value,
+body.dark-theme .mat-mdc-input-element,
+body.dark-theme .mat-mdc-select-value,
+body.dark-theme textarea.mat-mdc-input-element,
+body.dark-theme .mat-mdc-textarea-element {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-input-element::placeholder,
+body.dark-theme .mat-mdc-input-element::placeholder,
+body.dark-theme textarea.mat-mdc-input-element::placeholder {
+  color: var(--secondary-text-color) !important;
+  opacity: 0.6;
+}
+
+body.dark-theme .mat-select-panel,
+body.dark-theme .mat-mdc-select-panel {
+  background-color: var(--card-background) !important;
+}
+
+body.dark-theme .mat-option,
+body.dark-theme .mat-mdc-option {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-option:hover,
+body.dark-theme .mat-mdc-option:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Form fields - specific overrides */
+body.dark-theme .mat-mdc-text-field-wrapper,
+body.dark-theme .mdc-text-field {
+  background-color: var(--card-background) !important;
+}
+
+body.dark-theme .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: var(--card-background) !important;
+}
+
+body.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
+body.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
+body.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+  border-color: var(--border-color) !important;
+}
+
+body.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__leading,
+body.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__notch,
+body.dark-theme .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__trailing {
+  border-color: var(--primary-color) !important;
+}
+
+body.dark-theme .mat-mdc-form-field-focus-overlay {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dialog */
+body.dark-theme .mat-dialog-container,
+body.dark-theme .mat-mdc-dialog-container,
+body.dark-theme .cdk-dialog-container {
+  background-color: var(--dialog-background-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Dialog için giriş alanları */
+body.dark-theme .mat-dialog-container .mat-mdc-text-field-wrapper,
+body.dark-theme .mat-mdc-dialog-container .mat-mdc-text-field-wrapper,
+body.dark-theme .cdk-dialog-container .mat-mdc-text-field-wrapper {
+  background-color: var(--card-background) !important;
+}
+
+body.dark-theme .mat-dialog-container input,
+body.dark-theme .mat-mdc-dialog-container input,
+body.dark-theme .cdk-dialog-container input,
+body.dark-theme .mat-dialog-container textarea,
+body.dark-theme .mat-mdc-dialog-container textarea,
+body.dark-theme .cdk-dialog-container textarea {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-dialog-container .mat-form-field-label,
+body.dark-theme .mat-mdc-dialog-container .mat-mdc-form-field-label,
+body.dark-theme .cdk-dialog-container .mat-mdc-form-field-label {
+  color: var(--secondary-text-color) !important;
+}
+
+/* Aktiviteler Dialog */ 
+body.dark-theme [class*="github-düzenleme-aktiviteler"] .mat-mdc-dialog-container,
+body.dark-theme [class*="aktivite-takip"] .mat-mdc-dialog-container {
+  background-color: var(--dialog-background-color) !important;
+}
+
+body.dark-theme [class*="zaman-takibi"] {
+  color: var(--text-color) !important;
+}
+
+/* Giriş/Kayıt Formu Özel Düzenlemeler */
+body.dark-theme .login-container, 
+body.dark-theme .register-container {
+  background-color: var(--background-color) !important;
+}
+
+body.dark-theme .login-container .mat-mdc-card,
+body.dark-theme .register-container .mat-mdc-card {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+/* Toolbar */
+body.dark-theme .mat-toolbar.mat-primary,
+body.dark-theme .mat-mdc-toolbar.mat-primary {
+  background-color: var(--header-color) !important;
+  color: var(--header-text-color) !important;
+}
+
+/* Buttons */
+body.dark-theme .mat-button,
+body.dark-theme .mat-icon-button,
+body.dark-theme .mat-stroked-button,
+body.dark-theme .mat-mdc-button,
+body.dark-theme .mat-mdc-icon-button,
+body.dark-theme .mat-mdc-stroked-button {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-raised-button.mat-primary,
+body.dark-theme .mat-mdc-raised-button.mat-primary {
+  background-color: var(--primary-color) !important;
+  color: var(--header-text-color) !important;
+}
+
+body.dark-theme .mat-raised-button.mat-accent,
+body.dark-theme .mat-mdc-raised-button.mat-accent {
+  background-color: var(--accent-color) !important;
+  color: var(--header-text-color) !important;
+}
+
+body.dark-theme .mat-raised-button.mat-warn,
+body.dark-theme .mat-mdc-raised-button.mat-warn {
+  background-color: var(--warn-color) !important;
+  color: var(--header-text-color) !important;
+}
+
+body.dark-theme .new-project-button {
+  background-color: #4CAF50 !important;
+  color: white !important;
+}
+
+/* Snackbar */
+body.dark-theme .mat-snack-bar-container,
+body.dark-theme .mat-mdc-snack-bar-container {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+/* Metin ve Paragraf */
+body.dark-theme p,
+body.dark-theme span:not(.mat-button-wrapper):not(.mat-badge-content):not(.mat-mdc-button-wrapper):not(.mat-mdc-badge-content) {
+  color: var(--secondary-text-color) !important;
+}
+
+body.dark-theme .mat-card-title,
+body.dark-theme .mat-mdc-card-title,
+body.dark-theme h1, 
+body.dark-theme h2, 
+body.dark-theme h3, 
+body.dark-theme h4, 
+body.dark-theme h5, 
+body.dark-theme h6 {
+  color: var(--text-color) !important;
+}
+
+/* Card Parts */
+body.dark-theme .mat-card-header,
+body.dark-theme .mat-mdc-card-header {
+  color: var(--text-color) !important;
+}
+
+/* Card Subtitle */
+body.dark-theme .mat-card-subtitle,
+body.dark-theme .mat-mdc-card-subtitle {
+  color: var(--secondary-text-color) !important;
+}
+
+/* Card Content */
+body.dark-theme .mat-card-content,
+body.dark-theme .mat-mdc-card-content {
+  color: var(--secondary-text-color) !important;
+}
+
+/* Card Actions */
+body.dark-theme .mat-card-actions,
+body.dark-theme .mat-mdc-card-actions {
+  border-top-color: var(--border-color) !important;
+}
+
+/* Chip Stili */
+body.dark-theme .mat-chip.mat-standard-chip,
+body.dark-theme .mat-mdc-chip {
+  background-color: var(--border-color) !important;
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-chip.mat-standard-chip.mat-accent,
+body.dark-theme .mat-mdc-chip.mat-accent {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+}
+
+body.dark-theme .mat-chip.mat-standard-chip.mat-primary,
+body.dark-theme .mat-mdc-chip.mat-primary {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Divider Stili */
+body.dark-theme .mat-divider,
+body.dark-theme .mat-mdc-divider {
+  border-top-color: var(--border-color) !important;
+}
+
+/* Badge Stili */
+body.dark-theme .mat-badge-content,
+body.dark-theme .mat-mdc-badge-content {
+  background-color: var(--warn-color) !important;
+  color: #303030 !important;
+}
+
+/* Icons */
+body.dark-theme .mat-icon,
+body.dark-theme .material-icons {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-icon[color="primary"],
+body.dark-theme .material-icons[color="primary"] {
+  color: var(--primary-color) !important;
+}
+
+body.dark-theme .mat-icon[color="accent"],
+body.dark-theme .material-icons[color="accent"] {
+  color: var(--accent-color) !important;
+}
+
+body.dark-theme .mat-icon[color="warn"],
+body.dark-theme .material-icons[color="warn"] {
+  color: var(--warn-color) !important;
+}
+
+/* Tablo */
+body.dark-theme .mat-table,
+body.dark-theme .mat-mdc-table {
+  background-color: var(--card-background) !important;
+}
+
+body.dark-theme .mat-header-cell, 
+body.dark-theme .mat-cell,
+body.dark-theme .mat-mdc-header-cell,
+body.dark-theme .mat-mdc-cell {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-row:hover,
+body.dark-theme .mat-mdc-row:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Spinner */
+body.dark-theme .mat-progress-spinner circle,
+body.dark-theme .mat-spinner circle {
+  stroke: var(--primary-color) !important;
+}
+
+/* Backdrop */
+body.dark-theme .cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Project Grid */
+body.dark-theme .projects-grid {
+  background-color: transparent !important;
+}
+
+/* Filter row */
+body.dark-theme .filters-row {
+  background-color: transparent !important;
+}
+
+/* Tarih Seçici */
+body.dark-theme .mat-datepicker-content,
+body.dark-theme .mat-mdc-datepicker-content {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-calendar,
+body.dark-theme .mat-mdc-calendar {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-calendar-body-cell-content,
+body.dark-theme .mat-mdc-calendar-body-cell-content {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-calendar-body-selected,
+body.dark-theme .mat-mdc-calendar-body-selected {
+  background-color: var(--primary-color) !important;
+  color: var(--header-text-color) !important;
+}
+
+body.dark-theme .mat-calendar-arrow,
+body.dark-theme .mat-mdc-calendar-arrow {
+  border-top-color: var(--text-color) !important;
+}
+
+body.dark-theme .mat-calendar-table-header,
+body.dark-theme .mat-mdc-calendar-table-header {
+  color: var(--secondary-text-color) !important;
+}
+
+/* GitHub düzenleme bileşenleri ve diğer diyalog içerikleri */
+body.dark-theme [class*="görev-düzenle"],
+body.dark-theme [class*="gorev-duzenle"] {
+  background-color: var(--dialog-background-color) !important;
+  color: var(--text-color) !important;
+}
+
+body.dark-theme input,
+body.dark-theme textarea {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Aktivite Listesi */
+body.dark-theme [class*="aktivite-gecmis"] {
+  color: var(--text-color) !important;
+  background-color: var(--card-background) !important;
+}
+
+body.dark-theme [class*="aktivite-gecmis"] * {
+  color: var(--text-color) !important;
+}
+
+/* Zamanlayıcı */
+body.dark-theme [class*="zamanlayici"],
+body.dark-theme [class*="timer"] {
+  color: var(--text-color) !important;
+}
+
+/* Proje detay sayfası ve görev kartı stilleri */
+.project-detail-container, .task-container {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.project-detail-header, .task-header {
+  background-color: var(--card-background);
+  color: var(--text-color);
+}
+
+.task-list, .activity-list {
+  background-color: var(--card-background);
+  color: var(--text-color);
+}
+
+/* Görev kartları için özel stiller */
+.task-card, .project-info-card {
+  background-color: var(--card-background);
+  color: var(--text-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Diyalog overlay ve popup stilleri */
+.cdk-overlay-container .cdk-overlay-pane {
+  color: var(--text-color);
+}
+
+.cdk-overlay-container .cdk-global-overlay-wrapper {
+  color: var(--text-color);
+}
+
+.mat-dialog-title, .mdc-dialog__title {
+  color: var(--text-color);
+}
+
+/* Dialog başlık ve içerik alanları */
+.mat-dialog-title, .mat-dialog-content,
+.mat-mdc-dialog-title, .mat-mdc-dialog-content {
+  color: var(--text-color);
+}
+
+/* Karanlık tema proje detay ve görev kartı stilleri */
+body.dark-theme .project-detail-container,
+body.dark-theme .task-container {
+  background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .project-detail-header,
+body.dark-theme .task-header {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .project-info-card,
+body.dark-theme .task-card,
+body.dark-theme .task-list,
+body.dark-theme .activity-list {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+  box-shadow: 0 2px 8px var(--shadow-color) !important;
+}
+
+/* Dialog karanlık tema düzeltmeleri */
+body.dark-theme .cdk-overlay-pane .mat-dialog-container, 
+body.dark-theme .cdk-overlay-pane .mat-mdc-dialog-container {
+  background-color: var(--dialog-background-color) !important;
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .cdk-overlay-pane .mat-dialog-title,
+body.dark-theme .cdk-overlay-pane .mat-mdc-dialog-title {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .cdk-overlay-pane .mat-dialog-content,
+body.dark-theme .cdk-overlay-pane .mat-mdc-dialog-content {
+  background-color: var(--dialog-background-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Dialog içindeki form elemanları */
+body.dark-theme .cdk-overlay-pane input,
+body.dark-theme .cdk-overlay-pane textarea,
+body.dark-theme .cdk-overlay-pane .mat-mdc-input-element,
+body.dark-theme .cdk-overlay-pane .mat-mdc-textarea-element {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Beyaz arka plan düzeltmeleri */
+body.dark-theme .white-bg,
+body.dark-theme [class*="white-bg"],
+body.dark-theme [class*="bg-white"] {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+/* Material diyalog stilleri */
+.mat-mdc-dialog-surface, .mat-dialog-container {
+  background-color: var(--dialog-background-color);
+  color: var(--text-color);
+}
+
+body.dark-theme .mat-mdc-dialog-surface, 
+body.dark-theme .mat-dialog-container {
+  background-color: var(--dialog-background-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Genel karanlık tema iyileştirmeleri */
+body.dark-theme {
+  background-color: var(--background-color) !important;
+}
+
+body.dark-theme .mat-drawer-content {
+  background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Özelleştirilmiş aktivite diyalogları */
+body.dark-theme [class*="aktiviteler"] {
+  background-color: var(--dialog-background-color) !important;
+  color: var(--text-color) !important;
+}
+
+body.dark-theme [class*="aktiviteler"] * {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme [class*="aktiviteler"] input,
+body.dark-theme [class*="aktiviteler"] textarea {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* HTML native elementleri için karanlık tema */
+body.dark-theme input:-webkit-autofill,
+body.dark-theme input:-webkit-autofill:hover, 
+body.dark-theme input:-webkit-autofill:focus, 
+body.dark-theme input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--card-background) inset !important;
+  -webkit-text-fill-color: var(--text-color) !important;
+  caret-color: var(--text-color) !important;
+}
+
+/* To-do web sitesi başlığı */
+body.dark-theme [id*="to-do-web-sitesi"],
+body.dark-theme [class*="to-do-web-sitesi"] {
+  background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Modal kapatma butonu */
+body.dark-theme .close-button,
+body.dark-theme [class*="close-button"] {
+  color: var(--text-color) !important;
+  background-color: transparent !important;
+}
+
+/* Durumlar ve öncelikler için select kutuları */
+body.dark-theme select.mat-input-element,
+body.dark-theme select.mat-mdc-input-element {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Select option elementleri */
+body.dark-theme select.mat-input-element option,
+body.dark-theme select.mat-mdc-input-element option {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+/* Native select ve option */
+body.dark-theme select,
+body.dark-theme option {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Görev kartları beyaz arka plan düzeltmesi */
+body.dark-theme div[class*="list-item"],
+body.dark-theme div[class*="to-do-web-sitesi"],
+body.dark-theme div[class*="proje"] {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+/* Dashboard istatistik kartları için düzeltme */
+.stats-cards .mat-card,
+.stats-cards .mat-mdc-card {
+  background-color: var(--card-background);
+  color: var(--text-color);
+}
+
+/* Ana dashboard kart içeriği */
+.dashboard-container .stat-value {
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.dashboard-container .stat-label {
+  color: var(--secondary-text-color);
+}
+
+/* Ana proje içeriği ve proje listesi */
+body.dark-theme .stat-card {
+  background-color: var(--card-background) !important;
+}
+
+body.dark-theme .stat-value {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .stat-label {
+  color: var(--secondary-text-color) !important;
+}
+
+/* Proje kartları için stiller */
+body.dark-theme .projects-grid .mat-card,
+body.dark-theme .projects-grid .mat-mdc-card {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+/* Proje kartları için override */
+body.dark-theme mat-card.project-card,
+body.dark-theme div.project-card, 
+body.dark-theme .mat-mdc-card.project-card {
+  background-color: var(--card-background) !important;
+}
+
+/* Chip ve etiketler için */
+body.dark-theme .mat-chip-row,
+body.dark-theme .mdc-evolution-chip-row {
+  background-color: var(--border-color) !important;
+}
+
+/* Durum ve filtre alanları için */
+body.dark-theme mat-form-field.mat-mdc-form-field-type-mat-select .mat-mdc-text-field-wrapper {
+  background-color: var(--card-background) !important;
+}
+
+/* Ana sayfada proje arama bölümü */
+body.dark-theme .filters-row .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background-color: var(--card-background) !important;
+}
+
+/* Proje kartı içeriği */
+body.dark-theme .project-card * {
+  color: var(--text-color) !important;
+}
+
+body.dark-theme .project-card p {
+  color: var(--secondary-text-color) !important;
+}
+
+/* Aktif buton */
+body.dark-theme .aktif-chip {
+  background-color: var(--accent-color) !important;
+  color: #ffffff !important;
+}
+
+/* Aktif durumundaki chipler */
+body.dark-theme .mat-mdc-chip.mdc-evolution-chip--selected {
+  background-color: var(--accent-color) !important;
+  color: #ffffff !important;
+}
+
+/* Durumu Aktif olan projeler için chip */
+body.dark-theme mat-chip-row[selected] {
+  background-color: var(--accent-color) !important;
+  color: #ffffff !important;
+}
+
+/* Ana ekran düzenlemeleri */
+body.dark-theme .dashboard-container {
+  background-color: var(--background-color) !important;
+}
+
+body.dark-theme div.content {
+  background-color: var(--background-color) !important;
+}
+
+/* Tüm projeler kartları */
+body.dark-theme mat-card,
+body.dark-theme .mat-mdc-card {
+  background-color: var(--card-background) !important;
+}
+
+/* Proje detay sayfası */
+body.dark-theme .project-detail {
+  background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Giriş ekranı */
+body.dark-theme .login-box {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+/* To do web sitesi kartı */
+body.dark-theme [id^="to-do-web-sitesi"],
+body.dark-theme [id^="to-do"],
+body.dark-theme [class^="to-do"] {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}

@@ -168,4 +168,26 @@ export class SupabaseService {
     if (error) throw error;
     return data;
   }
+
+  // Görevlerin istatistiklerini almak için yeni method
+  async getTaskStats(userId: string) {
+    const { data: inProgress, error: inProgressError } = await this.supabase
+      .from('tasks')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('status', 'in_progress');
+    
+    const { data: completed, error: completedError } = await this.supabase
+      .from('tasks')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('status', 'done');
+    
+    if (inProgressError || completedError) throw inProgressError || completedError;
+    
+    return {
+      active: inProgress ? inProgress.length : 0,
+      completed: completed ? completed.length : 0
+    };
+  }
 } 
