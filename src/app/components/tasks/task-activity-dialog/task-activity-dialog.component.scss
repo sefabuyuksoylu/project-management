@@ -30,7 +30,7 @@ h2[mat-dialog-title] {
   font-size: 2em;
   text-align: center;
   margin: 15px 0;
-  color: #333;
+  color: var(--text-color, #333);
   font-family: monospace;
   
   &.active {
@@ -66,14 +66,14 @@ h2[mat-dialog-title] {
   flex-direction: column;
   align-items: center;
   padding: 30px 0;
-  color: #777;
+  color: var(--secondary-text-color, #777);
   
   mat-icon {
     font-size: 48px;
     height: 48px;
     width: 48px;
     margin-bottom: 15px;
-    color: #ccc;
+    color: var(--secondary-text-color, #ccc);
   }
   
   p {
@@ -102,7 +102,7 @@ h2[mat-dialog-title] {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-    color: #666;
+    color: var(--secondary-text-color, #666);
   }
   
   .activity-duration {
@@ -126,4 +126,342 @@ mat-divider {
 
 ::ng-deep .mat-dialog-content {
   max-height: calc(80vh - 64px);
+}
+
+// Görev bilgileri ve atanmış kişiler bölümü için stiller
+.task-info-section {
+  margin-bottom: 20px;
+  
+  mat-card {
+    margin-bottom: 15px;
+  }
+}
+
+.task-details {
+  margin-bottom: 15px;
+}
+
+.task-status-priority {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.task-status {
+  background-color: #e0e0e0;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.task-priority {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  
+  mat-icon {
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+  }
+}
+
+.task-description {
+  margin-bottom: 10px;
+  color: var(--text-color, #333);
+  line-height: 1.5;
+}
+
+.task-due-date {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--secondary-text-color, #666);
+  font-size: 13px;
+  
+  mat-icon {
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+  }
+}
+
+// Atanan kişiler bölümü
+.assignees-section {
+  margin-top: 15px;
+  
+  h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--text-color, #333);
+  }
+}
+
+.assignees-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.assignee-item {
+  margin-bottom: 10px;
+  height: auto !important; 
+  
+  .activity-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px 0;
+  }
+  
+  .activity-description {
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .activity-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--secondary-text-color, #666);
+  }
+  
+  .activity-duration {
+    font-weight: 500;
+    
+    &.active {
+      color: #f44336;
+    }
+  }
+}
+
+mat-divider {
+  margin: 8px 0;
+}
+
+// Görev Atamaları Bölümü
+.assign-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  
+  h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+  }
+}
+
+.assignee-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.assignee-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: var(--card-background-secondary, #f5f5f5);
+  
+  &:hover {
+    background-color: var(--hover-color, #eeeeee);
+  }
+}
+
+.assignee-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  background-color: var(--border-color, #e0e0e0);
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  mat-icon {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+    color: var(--secondary-text-color, #757575);
+  }
+}
+
+.assignee-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  
+  .assignee-name {
+    font-weight: 500;
+    color: var(--text-color);
+  }
+  
+  .assignee-email {
+    font-size: 12px;
+    color: var(--secondary-text-color, #757575);
+  }
+}
+
+.no-assignees {
+  padding: 15px;
+  text-align: center;
+  color: var(--secondary-text-color, #757575);
+}
+
+.add-assignee-section {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color, #e0e0e0);
+  
+  h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+  }
+}
+
+.add-assignee-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  
+  .team-member-select {
+    flex: 1;
+  }
+}
+
+.permission-info {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color, #e0e0e0);
+  
+  .permission-note {
+    font-size: 14px;
+    color: var(--secondary-text-color, #757575);
+    font-style: italic;
+    text-align: center;
+  }
+}
+
+// Aktivite formu için stiller
+:host {
+  display: block;
+}
+
+mat-dialog-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-button {
+  margin: -8px;
+}
+
+.activity-form {
+  margin-bottom: 20px;
+  
+  h3 {
+    margin-bottom: 10px;
+  }
+}
+
+.activity-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.description-field {
+  width: 100%;
+}
+
+.timer-display {
+  font-size: 28px;
+  text-align: center;
+  font-weight: 500;
+  font-family: monospace;
+  padding: 15px 0;
+  
+  &.active {
+    color: #f44336;
+  }
+}
+
+.activity-controls {
+  display: flex;
+  justify-content: center;
+}
+
+.activity-history {
+  h3 {
+    margin-bottom: 10px;
+  }
+}
+
+.activity-item {
+  margin-bottom: 10px;
+  height: auto !important;
+}
+
+.activity-info {
+  width: 100%;
+  padding: 10px 0;
+}
+
+.activity-description {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.activity-time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--secondary-text-color, #666);
+}
+
+.time-details {
+  font-size: 12px;
+}
+
+.activity-duration {
+  font-weight: 500;
+  font-family: monospace;
+  
+  &.active {
+    color: #f44336;
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.no-activities {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  color: var(--secondary-text-color, #666);
+  
+  mat-icon {
+    font-size: 40px;
+    height: 40px;
+    width: 40px;
+    margin-bottom: 10px;
+  }
 } 

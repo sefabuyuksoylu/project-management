@@ -1,1 +1,74 @@
-/* Light Theme - Default Angular Material Tema */ 
+/* Light Theme - Legacy Angular Material Tema */
+
+/* Bu dosya styles.css'deki CSS değişkenleriyle 
+   çalışır. Angular Material'ın eski versiyonları için 
+   bazı ek stiller içerir.
+*/
+
+/* Mat MDC olmayan eski bileşenler için stil desteği */
+.mat-toolbar.mat-primary {
+  background-color: var(--header-color);
+  color: var(--header-text-color);
+}
+
+.mat-card {
+  background-color: var(--card-background);
+  color: var(--text-color);
+}
+
+.mat-form-field-label {
+  color: var(--secondary-text-color) !important;
+}
+
+.mat-form-field-underline, 
+.mat-form-field-ripple {
+  background-color: var(--border-color) !important;
+}
+
+.mat-select-value, 
+.mat-select-arrow,
+.mat-input-element {
+  color: var(--text-color) !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: var(--border-color);
+}
+
+.mat-dialog-container {
+  background-color: var(--dialog-background-color);
+  color: var(--text-color);
+}
+
+.mat-menu-panel {
+  background-color: var(--card-background);
+}
+
+.mat-menu-item {
+  color: var(--text-color);
+}
+
+.mat-raised-button.mat-primary {
+  background-color: var(--primary-color);
+}
+
+.mat-raised-button.mat-accent {
+  background-color: var(--accent-color);
+}
+
+.mat-raised-button.mat-warn {
+  background-color: var(--warn-color);
+}
+
+.mat-chip.mat-standard-chip {
+  background-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.mat-divider {
+  border-top-color: var(--border-color);
+}
+
+.mat-icon {
+  color: var(--text-color);
+} 

@@ -15,6 +15,8 @@ import { ProjectFormComponent } from './components/projects/project-form/project
 import { TaskListComponent } from './components/tasks/task-list/task-list.component';
 import { TaskFormDialogComponent } from './components/tasks/task-form-dialog/task-form-dialog.component';
 import { TaskActivityDialogComponent } from './components/tasks/task-activity-dialog/task-activity-dialog.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 // Angular Material Modülleri
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -31,10 +33,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatBadgeModule } from '@angular/material/badge';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,9 @@ import { MatBadgeModule } from '@angular/material/badge';
     ProjectFormComponent,
     TaskListComponent,
     TaskFormDialogComponent,
-    TaskActivityDialogComponent
+    TaskActivityDialogComponent,
+    ProfileComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -68,10 +73,11 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatDialogModule,
     MatSelectModule,
     MatChipsModule,
+    MatBadgeModule,
+    MatSlideToggleModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatDividerModule,
-    MatBadgeModule
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

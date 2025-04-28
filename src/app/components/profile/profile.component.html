@@ -1,0 +1,68 @@
+<div class="profile-container">
+  <div class="header">
+    <h1>Profil Bilgilerim</h1>
+    <button mat-icon-button routerLink="/dashboard">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <div *ngIf="isLoading" class="loading-spinner">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <div *ngIf="!isLoading" class="profile-content">
+        <div class="avatar-section">
+          <div class="avatar-container">
+            <img *ngIf="avatarUrl" [src]="avatarUrl" alt="Profil Resmi" class="avatar-image">
+            <div *ngIf="!avatarUrl" class="avatar-placeholder">
+              <mat-icon>account_circle</mat-icon>
+            </div>
+            <button mat-mini-fab color="primary" class="change-avatar-button" (click)="fileInput.click()">
+              <mat-icon>photo_camera</mat-icon>
+            </button>
+            <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)">
+          </div>
+          <button *ngIf="avatarUrl" mat-button color="warn" (click)="removeAvatar()">Resmi Kaldır</button>
+        </div>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Ad Soyad</mat-label>
+            <input matInput formControlName="name" placeholder="Ad ve soyadınızı girin" required>
+            <mat-error *ngIf="profileForm.controls['name'].hasError('required')">
+              Ad soyad gerekli
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>E-posta</mat-label>
+            <input matInput formControlName="email" readonly>
+            <mat-hint>E-posta adresi değiştirilemez</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Unvan / Pozisyon</mat-label>
+            <input matInput formControlName="title" placeholder="Örn: Yazılım Geliştirici">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Hakkında</mat-label>
+            <textarea matInput formControlName="bio" rows="4" 
+                      placeholder="Kendiniz hakkında kısa bir açıklama yazın"></textarea>
+            <mat-hint align="end">{{profileForm.get('bio')?.value?.length || 0}}/300</mat-hint>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-button type="button" routerLink="/dashboard">İptal</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!profileForm.valid || isLoading">
+              <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+              <span *ngIf="!isLoading">Kaydet</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div> 

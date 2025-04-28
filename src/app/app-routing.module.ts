@@ -5,6 +5,8 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProjectFormComponent } from './components/projects/project-form/project-form.component';
 import { TaskListComponent } from './components/tasks/task-list/task-list.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { SettingsComponent } from './components/settings/settings.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -15,6 +17,8 @@ const routes: Routes = [
   { path: 'projects/new', component: ProjectFormComponent, canActivate: [AuthGuard] },
   { path: 'projects/:id', component: TaskListComponent, canActivate: [AuthGuard] },
   { path: 'projects/:id/edit', component: ProjectFormComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/dashboard' }
 ];
 

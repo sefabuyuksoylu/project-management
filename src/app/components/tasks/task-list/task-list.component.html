@@ -9,16 +9,36 @@
       <h1>{{ project.name }}</h1>
       <p>{{ project.description }}</p>
       <div class="project-actions">
-        <button mat-stroked-button (click)="editProject()">
+        <button *ngIf="isProjectOwner()" mat-stroked-button (click)="editProject()">
           <mat-icon>edit</mat-icon> Projeyi Düzenle
         </button>
       </div>
     </div>
   </div>
 
+  <!-- Takım Üyeleri Gösterimi -->
+  <div class="team-members-section" *ngIf="project">
+    <h2>Takım Üyeleri</h2>
+    <div class="team-members-list" *ngIf="teamMembers.length > 0">
+      <div class="team-member-card" *ngFor="let member of teamMembers">
+        <div class="member-avatar">
+          <img *ngIf="member.avatar_url" [src]="member.avatar_url" alt="{{ member.full_name || member.username || member.email }}">
+          <mat-icon *ngIf="!member.avatar_url">account_circle</mat-icon>
+        </div>
+        <div class="member-info">
+          <div class="member-name">{{ member.full_name || member.username || member.email }}</div>
+          <div class="member-email">{{ member.email }}</div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="teamMembers.length === 0" class="no-team-members">
+      <p>Bu projede henüz takım üyesi bulunmuyor.</p>
+    </div>
+  </div>
+
   <div class="task-controls">
     <h2>Görevler</h2>
-    <button mat-raised-button color="primary" (click)="openTaskForm()">
+    <button *ngIf="isProjectOwner()" mat-raised-button color="primary" (click)="openTaskForm()">
       <mat-icon>add</mat-icon> Yeni Görev
     </button>
   </div>
@@ -30,7 +50,7 @@
   <div *ngIf="!isLoading && tasks.length === 0" class="no-tasks">
     <mat-icon>assignment</mat-icon>
     <p>Bu projede henüz hiç görev yok.</p>
-    <button mat-raised-button color="primary" (click)="openTaskForm()">İlk Görevi Oluşturun</button>
+    <button *ngIf="isProjectOwner()" mat-raised-button color="primary" (click)="openTaskForm()">İlk Görevi Oluşturun</button>
   </div>
 
   <div *ngIf="!isLoading && tasks.length > 0" class="task-grid">
@@ -55,8 +75,8 @@
         </div>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button (click)="openTaskForm(task); $event.stopPropagation()">DÜZENLE</button>
-        <button mat-button color="warn" (click)="deleteTask(task, $event)">SİL</button>
+        <button *ngIf="isProjectOwner()" mat-button (click)="openTaskForm(task); $event.stopPropagation()">DÜZENLE</button>
+        <button *ngIf="isProjectOwner()" mat-button color="warn" (click)="deleteTask(task, $event)">SİL</button>
       </mat-card-actions>
     </mat-card>
   </div>

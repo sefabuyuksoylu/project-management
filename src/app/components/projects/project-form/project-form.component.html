@@ -1,9 +1,14 @@
 <div class="project-form-container">
   <div class="form-header">
     <h1>{{ isEditMode ? 'Projeyi Düzenle' : 'Yeni Proje Oluştur' }}</h1>
-    <button mat-icon-button routerLink="/dashboard" aria-label="Geri dön">
-      <mat-icon>arrow_back</mat-icon>
-    </button>
+    <div class="header-actions">
+      <button mat-icon-button routerLink="/dashboard" aria-label="Geri dön">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <button *ngIf="isEditMode" mat-icon-button color="warn" (click)="deleteProject()" matTooltip="Projeyi Sil" aria-label="Projeyi sil">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
   </div>
 
   <mat-card>
@@ -40,6 +45,72 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Takım Boyutu</mat-label>
+          <input matInput type="number" formControlName="teamSize" min="1" max="50">
+          <mat-hint>Projede çalışacak kişi sayısı</mat-hint>
+          <mat-error *ngIf="projectForm.controls['teamSize'].hasError('required')">
+            Takım boyutu gerekli
+          </mat-error>
+          <mat-error *ngIf="projectForm.controls['teamSize'].hasError('min')">
+            En az 1 kişi olmalıdır
+          </mat-error>
+          <mat-error *ngIf="projectForm.controls['teamSize'].hasError('max')">
+            En fazla 50 kişi olabilir
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Takım Üyeleri Bölümü (Düzenleme modunda) -->
+        <div *ngIf="isEditMode" class="team-members-section">
+          <h3>Takım Üyeleri</h3>
+          <div class="current-team-members">
+            <div *ngIf="teamMembers.length === 0" class="no-members">
+              <p>Henüz bu projede başka takım üyesi bulunmuyor.</p>
+            </div>
+            
+            <mat-list *ngIf="teamMembers.length > 0">
+              <mat-list-item *ngFor="let member of teamMembers" class="member-item">
+                <div class="member-avatar" matListItemAvatar>
+                  <img *ngIf="member.avatar_url" [src]="member.avatar_url" alt="{{ member.full_name || member.username || member.email }}">
+                  <mat-icon *ngIf="!member.avatar_url">account_circle</mat-icon>
+                </div>
+                <div matListItemTitle>{{ member.full_name || member.username || member.email }}</div>
+                <div matListItemLine *ngIf="member.full_name || member.username">{{ member.email }}</div>
+                
+                <!-- Kullanıcı çıkarma butonu - Proje sahibi çıkarılamaz -->
+                <button mat-icon-button color="warn" 
+                        *ngIf="member.id !== projectForm.value.user_id"
+                        (click)="removeTeamMember(member.id)"
+                        matTooltip="Takımdan Çıkar">
+                  <mat-icon>person_remove</mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
+          </div>
+          
+          <!-- Yeni Takım Üyesi Ekleme -->
+          <div class="add-team-member">
+            <h4>Yeni Takım Üyesi Ekle</h4>
+            <div class="add-member-form">
+              <mat-form-field appearance="outline">
+                <mat-label>Kullanıcı Seç</mat-label>
+                <mat-select #userSelect>
+                  <mat-option *ngFor="let user of allUsers" [value]="user.id"
+                              [disabled]="isUserAssigned(user.id)">
+                    {{ user.full_name || user.username || user.email }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              
+              <button mat-raised-button color="primary" 
+                      [disabled]="!userSelect.value"
+                      (click)="addTeamMember(userSelect.value)">
+                <mat-icon>person_add</mat-icon> Ekle
+              </button>
+            </div>
+          </div>
+        </div>
 
         <div class="button-container">
           <button mat-button type="button" (click)="cancel()">İptal</button>

@@ -3,9 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SupabaseService } from '../../../services/supabase.service';
-import { Task } from '../../../models/task.model';
+import { Task, TeamMember } from '../../../models/task.model';
 import { TaskActivity } from '../../../models/task-activity.model';
 import { interval, Subscription } from 'rxjs';
+import { UserRole } from '../../../models/user-role.model';
 
 @Component({
   selector: 'app-task-activity-dialog',
@@ -18,11 +19,18 @@ export class TaskActivityDialogComponent implements OnInit, OnDestroy {
   isLoading = false;
   isRecording = false;
   currentActivity: TaskActivity | null = null;
+  assignees: TeamMember[] = [];
 
   // Zaman takibi
   timer: Subscription | null = null;
   elapsedTime = 0;
   displayTime = '00:00:00';
+  
+  // Yetki kontrolü için değişkenler
+  hasAssignPermission = false;
+  allUsers: TeamMember[] = [];
+  availableUsers: TeamMember[] = [];
+  selectedTeamMember: string | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,10 +49,130 @@ export class TaskActivityDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadActivities();
+    this.loadAssignees();
+    this.checkUserPermission();
   }
 
   ngOnDestroy(): void {
     this.stopTimer();
+  }
+  
+  // Kullanıcının görev atama yetkisini kontrol et
+  async checkUserPermission() {
+    try {
+      if (!this.data.task.id || !this.data.userId) return;
+      
+      // Sadece görevin bağlı olduğu projenin sahibine yetki verilecek
+      this.hasAssignPermission = await this.supabaseService.canManageTask(this.data.task.id, this.data.userId);
+      
+      // Eğer kişi atama yetkisi varsa, mevcut kullanıcıları yükle
+      if (this.hasAssignPermission) {
+        this.loadAllUsers();
+      }
+    } catch (error) {
+      console.error('Yetki kontrolü yapılırken hata:', error);
+      this.hasAssignPermission = false;
+    }
+  }
+  
+  // Sistemdeki tüm kullanıcıları yükle
+  async loadAllUsers() {
+    try {
+      const { data: task } = await this.supabaseService.supabase
+        .from('tasks')
+        .select('project_id')
+        .eq('id', this.data.task.id)
+        .single();
+        
+      if (task) {
+        // Proje detaylarını al
+        const project = await this.supabaseService.getProjectById(task.project_id);
+        
+        // Sistemdeki tüm kullanıcıları yükle
+        const { data: users, error } = await this.supabaseService.supabase
+          .from('profiles')
+          .select('id, full_name, username, email, avatar_url')
+          .order('full_name', { ascending: true });
+          
+        if (error) throw error;
+        this.allUsers = users || [];
+        this.updateAvailableUsers();
+      }
+    } catch (error: any) {
+      console.error('Kullanıcılar yüklenirken hata:', error);
+    }
+  }
+  
+  // Mevcut atanmamış kullanıcıları güncelle
+  updateAvailableUsers() {
+    // Atanmış kişilerin ID'lerini al
+    const assignedIds = this.assignees.map(assignee => assignee.id);
+    
+    // Henüz atanmamış kullanıcıları filtrele
+    this.availableUsers = this.allUsers.filter(
+      user => !assignedIds.includes(user.id)
+    );
+  }
+  
+  async loadAssignees() {
+    if (!this.data.task.id) return;
+    
+    try {
+      this.assignees = await this.supabaseService.getTaskAssignees(this.data.task.id);
+      // Kullanıcı listesini güncelle
+      if (this.hasAssignPermission) {
+        this.updateAvailableUsers();
+      }
+    } catch (error: any) {
+      console.error('Atanan kişiler yüklenirken hata:', error);
+    }
+  }
+  
+  // Göreve yeni kişi ata
+  async addAssignee() {
+    if (!this.selectedTeamMember || !this.data.task.id || !this.hasAssignPermission) return;
+    
+    try {
+      await this.supabaseService.assignTaskToUsers(this.data.task.id, [this.selectedTeamMember]);
+      
+      // Atananları yeniden yükle
+      await this.loadAssignees();
+      
+      // Seçimi temizle ve uygun üyeleri güncelle
+      this.selectedTeamMember = null;
+      this.updateAvailableUsers();
+      
+      this.snackBar.open('Kişi göreve atandı!', 'Tamam', {
+        duration: 3000
+      });
+    } catch (error: any) {
+      this.snackBar.open(error.message || 'Kişi atanırken hata oluştu!', 'Tamam', {
+        duration: 3000
+      });
+    }
+  }
+  
+  // Kişiyi görevden çıkar
+  async removeAssignee(userId: string) {
+    if (!this.data.task.id || !this.hasAssignPermission) return;
+    
+    try {
+      await this.supabaseService.removeTaskAssignee(this.data.task.id, userId);
+      
+      // Atananları yeniden yükle
+      await this.loadAssignees();
+      
+      // Kullanıcı listesini güncelle
+      this.updateAvailableUsers();
+      
+      this.snackBar.open('Kişi görevden çıkarıldı!', 'Tamam', {
+        duration: 3000
+      });
+    } catch (error: any) {
+      this.snackBar.open(error.message || 'Kişi çıkarılırken hata oluştu!', 'Tamam', {
+        duration: 3000
+      });
+    }
   }
 
   async loadActivities() {
@@ -122,6 +250,7 @@ export class TaskActivityDialogComponent implements OnInit, OnDestroy {
         this.snackBar.open(error.message || 'Aktivite durdurulurken hata oluştu!', 'Tamam', {
           duration: 3000
         });
+        
       })
       .finally(() => {
         this.isLoading = false;
@@ -172,6 +301,38 @@ export class TaskActivityDialogComponent implements OnInit, OnDestroy {
   formatTime(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleString('tr-TR');
+  }
+  
+  formatDate(dateString: string | Date): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('tr-TR');
+  }
+  
+  getStatusText(status: string): string {
+    switch (status) {
+      case 'todo': return 'Yapılacak';
+      case 'in_progress': return 'Devam Ediyor';
+      case 'done': return 'Tamamlandı';
+      default: return status;
+    }
+  }
+  
+  getPriorityText(priority: string): string {
+    switch (priority) {
+      case 'low': return 'Düşük';
+      case 'medium': return 'Orta';
+      case 'high': return 'Yüksek';
+      default: return priority;
+    }
+  }
+  
+  getPriorityColor(priority: string): string {
+    switch (priority) {
+      case 'low': return 'green';
+      case 'medium': return 'orange';
+      case 'high': return 'red';
+      default: return 'inherit';
+    }
   }
 
   close(): void {

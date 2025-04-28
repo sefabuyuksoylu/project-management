@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SupabaseService } from '../../../services/supabase.service';
-import { Task } from '../../../models/task.model';
+import { Task, TeamMember } from '../../../models/task.model';
 
 @Component({
   selector: 'app-task-form-dialog',
@@ -14,6 +14,7 @@ export class TaskFormDialogComponent implements OnInit {
   taskForm: FormGroup;
   isLoading = false;
   isEditMode = false;
+  teamMembers: TeamMember[] = [];
   
   priorities = [
     { value: 'low', label: 'Düşük' },
@@ -43,7 +44,8 @@ export class TaskFormDialogComponent implements OnInit {
       description: [''],
       status: ['todo', Validators.required],
       priority: ['medium', Validators.required],
-      due_date: [null]
+      due_date: [null],
+      assigned_to: [[]]
     });
     
     this.isEditMode = !!data.task;
@@ -54,12 +56,30 @@ export class TaskFormDialogComponent implements OnInit {
         description: data.task.description || '',
         status: data.task.status,
         priority: data.task.priority,
-        due_date: data.task.due_date || null
+        due_date: data.task.due_date || null,
+        assigned_to: data.task.assigned_to || []
       });
     }
   }
 
   ngOnInit(): void {
+    this.loadTeamMembers();
+  }
+  
+  async loadTeamMembers() {
+    if (!this.data.projectId) return;
+    
+    try {
+      this.isLoading = true;
+      this.teamMembers = await this.supabaseService.getTeamMembers(this.data.projectId);
+    } catch (error) {
+      console.error('Takım üyeleri yüklenirken hata:', error);
+      this.snackBar.open('Takım üyeleri yüklenemedi', 'Tamam', {
+        duration: 3000
+      });
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   async onSubmit() {
@@ -98,5 +118,23 @@ export class TaskFormDialogComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+  
+  isUserAssigned(userId: string): boolean {
+    const assignedUsers = this.taskForm.get('assigned_to')?.value || [];
+    return assignedUsers.includes(userId);
+  }
+  
+  toggleUserAssignment(userId: string): void {
+    const assignedUsers = [...(this.taskForm.get('assigned_to')?.value || [])];
+    const index = assignedUsers.indexOf(userId);
+    
+    if (index === -1) {
+      assignedUsers.push(userId);
+    } else {
+      assignedUsers.splice(index, 1);
+    }
+    
+    this.taskForm.get('assigned_to')?.setValue(assignedUsers);
   }
 } 

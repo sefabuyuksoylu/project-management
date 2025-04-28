@@ -1,0 +1,112 @@
+<div class="settings-container">
+  <div class="header">
+    <h1>Ayarlar</h1>
+    <button mat-icon-button routerLink="/dashboard">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div *ngIf="!isLoading" class="settings-content">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Görünüm Ayarları</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="setting-item">
+          <div class="setting-label">
+            <mat-icon>brightness_4</mat-icon>
+            <span>Karanlık Mod</span>
+          </div>
+          <mat-slide-toggle [checked]="isDarkMode" (change)="toggleDarkMode($event)"></mat-slide-toggle>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Bildirim Ayarları</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="setting-item">
+            <div class="setting-label">
+              <mat-icon>email</mat-icon>
+              <span>E-posta Bildirimleri</span>
+            </div>
+            <mat-slide-toggle formControlName="emailNotifications"></mat-slide-toggle>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="setting-item">
+            <div class="setting-label">
+              <mat-icon>notifications</mat-icon>
+              <span>Push Bildirimleri</span>
+            </div>
+            <mat-slide-toggle formControlName="pushNotifications"></mat-slide-toggle>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Bölgesel Ayarlar</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="setting-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Dil</mat-label>
+              <mat-select formControlName="language">
+                <mat-option value="tr">Türkçe</mat-option>
+                <mat-option value="en">İngilizce</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="setting-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Zaman Dilimi</mat-label>
+              <mat-select formControlName="timezone">
+                <mat-option value="Europe/Istanbul">Türkiye (UTC+3)</mat-option>
+                <mat-option value="Europe/London">Londra (UTC+0/+1)</mat-option>
+                <mat-option value="America/New_York">New York (UTC-5/-4)</mat-option>
+                <mat-option value="Asia/Tokyo">Tokyo (UTC+9)</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-button type="button" (click)="resetSettings()">Sıfırla</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
+            <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+            <span *ngIf="!isLoading">Kaydet</span>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+
+    <mat-card class="danger-zone">
+      <mat-card-header>
+        <mat-card-title>Hesap Yönetimi</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="setting-item">
+          <div class="setting-label">
+            <mat-icon>lock</mat-icon>
+            <span>Şifremi Değiştir</span>
+          </div>
+          <button mat-stroked-button color="primary" (click)="openChangePasswordDialog()">Şifre Değiştir</button>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="setting-item">
+          <div class="setting-label">
+            <mat-icon color="warn">delete_forever</mat-icon>
+            <span class="danger-text">Hesabımı Sil</span>
+          </div>
+          <button mat-stroked-button color="warn" (click)="deleteAccount()">Hesabı Sil</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> 

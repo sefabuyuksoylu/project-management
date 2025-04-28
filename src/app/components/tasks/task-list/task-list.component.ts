@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SupabaseService } from '../../../services/supabase.service';
-import { Task } from '../../../models/task.model';
+import { Task, TeamMember } from '../../../models/task.model';
 import { Project } from '../../../models/project.model';
 import { TaskFormDialogComponent } from '../task-form-dialog/task-form-dialog.component';
 import { TaskActivityDialogComponent } from '../task-activity-dialog/task-activity-dialog.component';
@@ -19,6 +19,7 @@ export class TaskListComponent implements OnInit {
   isLoading = false;
   projectId: number | null = null;
   currentUser: any;
+  teamMembers: TeamMember[] = [];
 
   constructor(
     private supabaseService: SupabaseService,
@@ -34,7 +35,7 @@ export class TaskListComponent implements OnInit {
       if (id) {
         this.projectId = parseInt(id);
         this.loadProject();
-        this.loadTasks();
+        this.loadTeamMembers();
       } else {
         this.router.navigate(['/dashboard']);
       }
@@ -42,6 +43,9 @@ export class TaskListComponent implements OnInit {
 
     this.supabaseService.currentUser$.subscribe(user => {
       this.currentUser = user;
+      if (this.projectId && this.currentUser) {
+        this.loadTasks();
+      }
     });
   }
 
@@ -72,13 +76,28 @@ export class TaskListComponent implements OnInit {
   }
 
   async loadTasks() {
+    if (!this.projectId || !this.currentUser) return;
+    
+    this.isLoading = true;
+    try {
+      this.tasks = await this.supabaseService.getTasks(this.projectId, this.currentUser.id);
+    } catch (error: any) {
+      this.snackBar.open(error.message || 'Görevler yüklenirken hata oluştu!', 'Tamam', {
+        duration: 3000
+      });
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async loadTeamMembers() {
     if (!this.projectId) return;
     
     this.isLoading = true;
     try {
-      this.tasks = await this.supabaseService.getTasks(this.projectId);
+      this.teamMembers = await this.supabaseService.getTeamMembers(this.projectId);
     } catch (error: any) {
-      this.snackBar.open(error.message || 'Görevler yüklenirken hata oluştu!', 'Tamam', {
+      this.snackBar.open(error.message || 'Takım üyeleri yüklenirken hata oluştu!', 'Tamam', {
         duration: 3000
       });
     } finally {
@@ -162,5 +181,9 @@ export class TaskListComponent implements OnInit {
   editProject() {
     if (!this.projectId) return;
     this.router.navigate(['/projects', this.projectId, 'edit']);
+  }
+
+  isProjectOwner(): boolean {
+    return this.project && this.currentUser && this.project.user_id === this.currentUser.id;
   }
 } 

@@ -6,6 +6,92 @@
 </h2>
 
 <div mat-dialog-content>
+  <!-- Görev Bilgileri ve Atanan Kişiler -->
+  <div class="task-info-section">
+    <mat-card>
+      <mat-card-content>
+        <div class="task-details">
+          <div class="task-status-priority">
+            <span class="task-status">{{ getStatusText(data.task.status) }}</span>
+            <span class="task-priority" [style.color]="getPriorityColor(data.task.priority)">
+              <mat-icon>flag</mat-icon>
+              {{ getPriorityText(data.task.priority) }}
+            </span>
+          </div>
+          
+          <div class="task-description" *ngIf="data.task.description">{{ data.task.description }}</div>
+          
+          <div class="task-due-date" *ngIf="data.task.due_date">
+            <mat-icon>event</mat-icon>
+            <span>Teslim Tarihi: {{ formatDate(data.task.due_date) }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+  <!-- Görev Atamaları Bölümü -->
+  <div class="assign-section">
+    <h3>Görev Atamaları</h3>
+    <mat-card>
+      <mat-card-content>
+        <!-- Mevcut Atamalar (herkes görebilir) -->
+        <div class="current-assignees" *ngIf="assignees.length > 0">
+          <div class="assignee-list">
+            <div class="assignee-item" *ngFor="let assignee of assignees">
+              <div class="assignee-avatar" *ngIf="assignee.avatar_url">
+                <img [src]="assignee.avatar_url" alt="{{ assignee.full_name || assignee.username || assignee.email }}">
+              </div>
+              <div class="assignee-avatar" *ngIf="!assignee.avatar_url">
+                <mat-icon>account_circle</mat-icon>
+              </div>
+              <div class="assignee-details">
+                <span class="assignee-name">{{ assignee.full_name || assignee.username || assignee.email }}</span>
+                <span class="assignee-email" *ngIf="assignee.full_name || assignee.username">{{ assignee.email }}</span>
+              </div>
+              
+              <!-- Sadece yetkili kullanıcılar kişileri çıkarabilir -->
+              <button *ngIf="hasAssignPermission" mat-icon-button color="warn" 
+                      (click)="removeAssignee(assignee.id)" 
+                      matTooltip="Görevi bu kişiden kaldır">
+                <mat-icon>person_remove</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="no-assignees" *ngIf="assignees.length === 0">
+          <p>Bu görev henüz kimseye atanmamış.</p>
+        </div>
+        
+        <!-- Yeni Atama Ekleme (sadece yetkili kişiler görebilir) -->
+        <div class="add-assignee-section" *ngIf="hasAssignPermission">
+          <h4>Yeni Kişi Ata</h4>
+          <div class="add-assignee-form">
+            <mat-form-field appearance="outline" class="team-member-select">
+              <mat-label>Kullanıcı Seç</mat-label>
+              <mat-select [(ngModel)]="selectedTeamMember">
+                <mat-option *ngFor="let user of availableUsers" [value]="user.id">
+                  {{ user.full_name || user.username || user.email }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <button mat-raised-button color="primary" [disabled]="!selectedTeamMember" 
+                    (click)="addAssignee()">
+              <mat-icon>person_add</mat-icon> Ata
+            </button>
+          </div>
+        </div>
+        
+        <!-- Yeterli yetkiye sahip olmayan kullanıcılar için açıklama -->
+        <div class="permission-info" *ngIf="!hasAssignPermission && assignees.length > 0">
+          <p class="permission-note">Not: Sadece proje sahibi görevlere kişi atayabilir.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <div class="activity-form">
     <h3>Zaman Takibi</h3>
     <mat-card>

@@ -1,56 +1,82 @@
-<h2 mat-dialog-title>{{ isEditMode ? 'Görevi Düzenle' : 'Yeni Görev Ekle' }}</h2>
-
-<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
-  <div mat-dialog-content>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Başlık</mat-label>
-      <input matInput formControlName="title" placeholder="Görev başlığı" required>
-      <mat-error *ngIf="taskForm.controls['title'].hasError('required')">
-        Başlık gerekli
-      </mat-error>
-      <mat-error *ngIf="taskForm.controls['title'].hasError('minlength')">
-        Başlık en az 3 karakter olmalıdır
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Açıklama</mat-label>
-      <textarea matInput formControlName="description" rows="3" placeholder="Görevin detaylı açıklaması"></textarea>
-    </mat-form-field>
-
-    <div class="form-row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Durum</mat-label>
-        <mat-select formControlName="status">
-          <mat-option *ngFor="let status of statuses" [value]="status.value">
-            {{ status.label }}
-          </mat-option>
-        </mat-select>
+<div class="task-form-dialog-container">
+  <h2 mat-dialog-title>{{ isEditMode ? 'Görevi Düzenle' : 'Yeni Görev Oluştur' }}</h2>
+  
+  <mat-dialog-content>
+    <form [formGroup]="taskForm" class="form-container">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Başlık</mat-label>
+        <input matInput formControlName="title" placeholder="Görev başlığı" required>
+        <mat-error *ngIf="taskForm.controls['title'].hasError('required')">Başlık gerekli</mat-error>
+        <mat-error *ngIf="taskForm.controls['title'].hasError('minlength')">Başlık en az 3 karakter olmalıdır</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Öncelik</mat-label>
-        <mat-select formControlName="priority">
-          <mat-option *ngFor="let priority of priorities" [value]="priority.value">
-            {{ priority.label }}
-          </mat-option>
-        </mat-select>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Açıklama</mat-label>
+        <textarea matInput formControlName="description" rows="3" placeholder="Görev açıklaması"></textarea>
       </mat-form-field>
-    </div>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Teslim Tarihi</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="due_date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Durum</mat-label>
+          <mat-select formControlName="status">
+            <mat-option *ngFor="let status of statuses" [value]="status.value">
+              {{ status.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <div mat-dialog-actions align="end">
-    <button mat-button type="button" [disabled]="isLoading" (click)="onCancel()">İptal</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!taskForm.valid || isLoading">
-      <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
-      <span *ngIf="!isLoading">{{ isEditMode ? 'Güncelle' : 'Ekle' }}</span>
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Öncelik</mat-label>
+          <mat-select formControlName="priority">
+            <mat-option *ngFor="let priority of priorities" [value]="priority.value">
+              {{ priority.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Teslim Tarihi</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="due_date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      
+      <!-- Takım Üyeleri Seçimi -->
+      <div class="team-members-section">
+        <h3>Görevi Ata</h3>
+        <div class="team-members-list" *ngIf="teamMembers.length > 0">
+          <div class="team-member-item" *ngFor="let member of teamMembers">
+            <mat-checkbox 
+              [checked]="isUserAssigned(member.id)" 
+              (change)="toggleUserAssignment(member.id)">
+              <div class="member-info">
+                <div class="member-avatar" *ngIf="member.avatar_url">
+                  <img [src]="member.avatar_url" alt="{{ member.full_name || member.username || member.email }}">
+                </div>
+                <div class="member-avatar" *ngIf="!member.avatar_url">
+                  <mat-icon>account_circle</mat-icon>
+                </div>
+                <div class="member-details">
+                  <div class="member-name">{{ member.full_name || member.username || member.email }}</div>
+                  <div class="member-email" *ngIf="member.full_name || member.username">{{ member.email }}</div>
+                </div>
+              </div>
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="no-members" *ngIf="teamMembers.length === 0">
+          <p>Bu proje için takım üyesi bulunamadı. Görevi sadece kendinize atayabilirsiniz.</p>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-button (click)="onCancel()">İptal</button>
+    <button mat-raised-button color="primary" [disabled]="taskForm.invalid || isLoading" (click)="onSubmit()">
+      <mat-spinner *ngIf="isLoading" diameter="20" class="spinner-button"></mat-spinner>
+      <span *ngIf="!isLoading">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</span>
     </button>
-  </div>
-</form> 
+  </mat-dialog-actions>
+</div> 

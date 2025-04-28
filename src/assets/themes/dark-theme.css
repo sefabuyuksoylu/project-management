@@ -1,83 +1,74 @@
-/* Dark Theme için Angular Material Override */
+/* Dark Theme için Angular Material Override - Legacy */
 
-/* Genel Stiller */
-body {
-  background-color: #303030;
-  color: #f5f5f5;
-}
+/* Bu dosya styles.css'deki CSS değişkenleriyle 
+   çalışır. Angular Material'ın eski versiyonları için 
+   bazı ek stiller içerir.
+*/
 
-/* Toolbar Stili */
+/* Mat MDC olmayan eski bileşenler için stil desteği */
 .mat-toolbar.mat-primary {
-  background-color: #212121;
-  color: #f5f5f5;
+  background-color: var(--header-color);
+  color: var(--header-text-color);
 }
 
-/* Card Stili */
 .mat-card {
-  background-color: #424242;
-  color: #f5f5f5;
+  background-color: var(--card-background);
+  color: var(--text-color);
 }
 
-/* Form Stili */
 .mat-form-field-label {
-  color: #bdbdbd !important;
+  color: var(--secondary-text-color) !important;
 }
 
 .mat-form-field-underline, 
 .mat-form-field-ripple {
-  background-color: #616161 !important;
+  background-color: var(--border-color) !important;
 }
 
 .mat-select-value, 
 .mat-select-arrow,
 .mat-input-element {
-  color: #f5f5f5 !important;
+  color: var(--text-color) !important;
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline {
-  color: #616161;
+  color: var(--border-color);
 }
 
-/* Dialog Stili */
 .mat-dialog-container {
-  background-color: #424242;
-  color: #f5f5f5;
+  background-color: var(--dialog-background-color);
+  color: var(--text-color);
 }
 
-/* Menü Stili */
 .mat-menu-panel {
-  background-color: #424242;
+  background-color: var(--card-background);
 }
 
 .mat-menu-item {
-  color: #f5f5f5;
+  color: var(--text-color);
 }
 
-/* Button Stili */
 .mat-raised-button.mat-primary {
-  background-color: #7986cb;
+  background-color: var(--primary-color);
 }
 
 .mat-raised-button.mat-accent {
-  background-color: #ff80ab;
+  background-color: var(--accent-color);
 }
 
 .mat-raised-button.mat-warn {
-  background-color: #ef9a9a;
+  background-color: var(--warn-color);
 }
 
-/* Chip Stili */
 .mat-chip.mat-standard-chip {
-  background-color: #616161;
-  color: #f5f5f5;
+  background-color: var(--border-color);
+  color: var(--text-color);
 }
 
-/* Divider Stili */
 .mat-divider {
-  border-top-color: #616161;
+  border-top-color: var(--border-color);
 }
 
-/* İkon Stili */
 .mat-icon {
-  color: #f5f5f5;
+  color: var(--text-color);
 } 
